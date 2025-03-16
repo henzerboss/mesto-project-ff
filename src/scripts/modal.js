@@ -1,26 +1,23 @@
-export function openModal(classModal) {
-  const elementModal = document.querySelector(classModal);
-  elementModal.classList.add("popup_is-animated");
-  setTimeout(() => {
-    elementModal.classList.add("popup_is-opened");
-    elementModal.classList.remove("popup_is-animated");
-  }, 10);
-
-  function listenerEscape(evt) {
+export function openModal(modalElement) {
+  modalElement.classList.add("popup_is-opened");
+  function closeByEsc(evt) {
     if (evt.key === "Escape") {
-      closeModal(classModal);
-      document.removeEventListener("keydown", listenerEscape);
+      const openPopup = document.querySelector(".popup_is-opened");
+      if (openPopup) {
+        closeModal(openPopup);
+      }
     }
   }
-  document.addEventListener("keydown", listenerEscape);
+  document.addEventListener("keydown", closeByEsc);
 }
 
-export function closeModal(classModal) {
-  const elementModal = document.querySelector(classModal);
-  elementModal.classList.add("popup_is-animated");
-  elementModal.classList.remove("popup_is-opened");
+export function closeModal(modalElement) {
+  modalElement.classList.add("popup_is-animated");
+  modalElement.classList.remove("popup_is-opened");
+}
 
-  setTimeout(() => {
-    elementModal.classList.remove("popup_is-animated");
-  }, 600);
+export function closeByOverlayClick(evt) {
+  if (evt.target.classList.contains("popup")) {
+    closeModal(evt.target);
+  }
 }
