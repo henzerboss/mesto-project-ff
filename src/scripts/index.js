@@ -46,6 +46,7 @@ profileEditButton.addEventListener("click", () => {
 profileAddButton.addEventListener("click", () => openModal(popupNewCard));
 
 allPopups.forEach((popup) => {
+  popup.classList.add("popup_is-animated");
   const closeButton = popup.querySelector(".popup__close");
   closeButton.addEventListener("click", () => closeModal(popup));
   popup.addEventListener("click", (evt) => closeByOverlayClick(evt, popup));
