@@ -67,7 +67,7 @@ Promise.all([getUserData(), getInitialCards()])
           cardLink,
           cardAlt,
           cardLikeCount,
-          openImagePopup,
+          () => openImagePopup(cardLink, cardAlt),
           authorId,
           userId,
           cardID,
@@ -92,7 +92,10 @@ profileEditButton.addEventListener("click", () => {
   clearValidation(formEditProfile, formConfig);
 });
 
-profileAddButton.addEventListener("click", () => openModal(popupNewCard));
+profileAddButton.addEventListener("click", () => {
+  openModal(popupNewCard);
+  clearValidation(formNewPlace, formConfig);
+});
 
 allPopups.forEach((popup) => {
   popup.classList.add("popup_is-animated");
@@ -157,13 +160,15 @@ function handleFormSubmitNewPlace(evt) {
           cardData.link,
           cardAlt,
           cardLikeCount,
-          openImagePopup,
+          () => openImagePopup(cardLink, cardAlt),
           cardData.owner._id,
           cardData.owner._id,
           cardData._id,
           isLiked
         )
       );
+      closeModal(popupNewCard);
+      formNewPlace.reset();
     })
     .catch((err) => {
       console.log(err);
@@ -171,25 +176,15 @@ function handleFormSubmitNewPlace(evt) {
     .finally(() => {
       renderLoading(formNewPlace, false);
     });
-
-  closeModal(popupNewCard);
-  cardName.value = "";
-  cardURL.value = "";
-  clearValidation(formNewPlace, formConfig);
 }
 
 formNewPlace.addEventListener("submit", handleFormSubmitNewPlace);
 
-function openImagePopup(evt) {
-  if (evt.target.classList.contains("card__image")) {
-    const imageSrc = evt.target.src;
-    const imageAlt = evt.target.alt;
-
-    popupImageElement.src = imageSrc;
-    popupImageElement.alt = imageAlt;
-    popupCaption.textContent = imageAlt;
-    openModal(popupImage);
-  }
+function openImagePopup(imageSrc, imageAlt) {
+  popupImageElement.src = imageSrc;
+  popupImageElement.alt = imageAlt;
+  popupCaption.textContent = imageAlt;
+  openModal(popupImage);
 }
 
 enableValidation(formConfig);

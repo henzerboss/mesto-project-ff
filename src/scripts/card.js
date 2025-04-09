@@ -45,7 +45,7 @@ export function createCard(
     const isLikedNow = likeButton.classList.contains(
       "card__like-button_is-active"
     );
-    toggleLike(cardElement, cardID, isLikedNow);
+    toggleLike(cardID, likeButton, likeCount, isLikedNow);
   });
 
   cardImage.addEventListener("click", openImagePopup);
@@ -62,12 +62,9 @@ function deleteCard(cardElement, cardID) {
     });
 }
 
-function toggleLike(cardElement, cardID, isLiked) {
+function toggleLike(cardID, likeButton, likeCount, isLiked) {
   countLikeCard(cardID, isLiked)
     .then((cardData) => {
-      const likeButton = cardElement.querySelector(".card__like-button");
-      const likeCount = cardElement.querySelector(".card__like-count");
-
       likeCount.textContent = cardData.likes.length;
 
       if (isLiked) {
